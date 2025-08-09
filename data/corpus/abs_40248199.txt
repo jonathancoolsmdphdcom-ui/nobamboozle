@@ -1,0 +1,3 @@
+Case Report: Lasting complete response to pembrolizumab in mismatch repair-deficient cardiac sarcoma: a genomic characterization.
+
+Sarcomas are traditionally considered "cold" tumors with poor response to immunotherapy. However, evidence accumulating over the last years shows that immune checkpoint inhibitors (ICIs) may have a role in selected sarcoma patients according to predictive markers. Here, we report the case of a woman diagnosed with a primary cardiac undifferentiated sarcoma. Following failure of standard first line chemotherapy, high-throughput sequencing (HTS) revealed a high tumor mutational burden (TMB), pathogenic mutations in

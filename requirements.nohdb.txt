@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+psycopg2-binary
+SQLAlchemy
+pgvector
+requests
+PyYAML
+sentence-transformers
+scikit-learn
+pandas
+numpy
+streamlit
+python-dateutil

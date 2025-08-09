@@ -1,0 +1,3 @@
+Interferon-responsive HEVs drive tumor tertiary lymphoid structure formation and predict immunotherapy response in nasopharyngeal carcinoma.
+
+The outcome of immune checkpoint blockade (ICB) therapy largely hinges on the antitumor immunity of tertiary lymphoid structures (TLSs), but drivers of tumor TLS formation remain exclusive. By integrating spatial transcriptomics and a pan-cancer single-cell atlas, we reveal the characteristics of TLSs in nasopharyngeal carcinoma (NPC) and identify a subset of interferon-responsive high endothelial venules (IFN-HEVs) that links to the emergence of tumor-specific chemokines, especially CXCL9. Functionally, CXCL9-secreting IFN-HEVs are associated with the recruitment of CXCR3

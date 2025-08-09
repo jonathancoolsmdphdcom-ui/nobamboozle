@@ -1,0 +1,3 @@
+Single-Nucleus and Spatial Transcriptome Profiling Delineates the Multicellular Ecosystem in Hepatocellular Carcinoma After Hepatic Arterial Infusion Chemotherapy.
+
+Hepatic arterial infusion chemotherapy (HAIC) has emerged as a promising treatment strategy for hepatocellular carcinoma (HCC), but a detailed understanding of the multicellular ecosystem after HAIC treatment is lacking. Here, we collected tumor samples from treatment-naïve primary and post-HAIC HCC, and integrated single-nucleus RNA sequencing with spatial transcriptomics to characterize the tumor ecosystem in the post-HAIC HCC. Increased fractions and enhanced cellular communication of CD4

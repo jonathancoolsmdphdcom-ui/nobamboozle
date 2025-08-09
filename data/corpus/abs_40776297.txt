@@ -1,0 +1,3 @@
+Risk Factors for Immune-Related Adverse Events in Older Cancer Patients Undergoing Immune Checkpoint Inhibitors.
+
+This study identifies key risk factors for immune-related adverse events (irAEs) in older cancer adults receiving immune checkpoint inhibitors (ICIs). Using the Flatiron Health database, the XGBoost model and SHAP analysis identified BMI, SES, ECOG score, sex, comorbidities, and pain score as significant predictors.

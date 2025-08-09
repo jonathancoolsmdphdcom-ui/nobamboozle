@@ -1,0 +1,3 @@
+The Prognostic Role of Tertiary Lymphoid Structures and Immune Microenvironment Signatures in Early-Stage
+
+The role of tertiary lymphoid structures (TLSs) in cancer prognosis is well established, yet their significance in early-stage  TLSs were identified in tumor samples using multiplex immunohistochemistry (IHC), and their density was quantified. The PD-L1 tumor proportion score (TPS) and TLS density were analyzed for associations with disease-free survival (DFS). Gene expression profiling was performed to compare tumor microenvironment signatures between high- and low-TLS-density groups. High TLS density correlated with significantly longer DFS (43 vs. 20.5 months,  In summary, TLS density is a potential prognostic biomarker for DFS in early-stage

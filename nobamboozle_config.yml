@@ -1,0 +1,103 @@
+# No Bamboozle (nobamboozle.ca) — initial configuration
+app:
+  name: "No Bamboozle"
+  domain: "nobamboozle.ca"
+  contact_email: "jonathancoolsmdphd@gmail.com"
+
+topics:
+  seed_topics:
+    - "immuno-oncology"
+    - "thoracic oncology"
+    - "surgical oncology"
+    - "lung cancer"
+    - "esophageal cancer"
+    - "stomach cancer"
+    - "mediastinal masses"
+    - "thymoma"
+    - "sarcoma"
+    - "lymphoma"
+    - "chest wall tumors"
+    - "tumor microenvironment"
+    - "neoadjuvant"
+    - "perioperative"
+    - "prehabilitation"
+    - "PD-1"
+    - "PD-L1"
+    - "CTLA-4"
+    - "immune checkpoint"
+    - "T cell exhaustion"
+    - "TCF-1"
+    - "CD8 T cell"
+    - "CD4 T cell"
+    - "immunotherapy"
+    - "radiation therapy"
+    - "surgery"
+    - "chemoradiation"
+
+ingestion:
+  sources:
+    pubmed:
+      enabled: true
+      search_terms:
+        - "(lung OR pulmonary OR thoracic) AND (cancer OR carcinoma)"
+        - "(esophageal OR oesophageal OR stomach OR gastric) AND (cancer OR carcinoma)"
+        - "(mediastinal OR thymoma OR sarcoma OR lymphoma OR 'chest wall')"
+        - "('tumor microenvironment' OR 'tumour microenvironment' OR TME)"
+        - "(neoadjuvant OR perioperative OR prehabilitation)"
+        - "(immunotherapy OR 'immune checkpoint' OR PD-1 OR PD-L1 OR CTLA-4)"
+        - "('T cell' AND (exhaustion OR TCF-1 OR 'CD8' OR 'CD4'))"
+        - "(radiation therapy OR radiotherapy)"
+        - "(surgery OR surgical oncology)"
+      max_results_per_term: 1500
+      days_back_initial: 3650
+      days_back_nightly: 7
+    biorxiv:
+      enabled: true
+      categories:
+        - "cancer biology"
+        - "immunology"
+        - "bioinformatics"
+      days_back_initial: 3650
+      days_back_nightly: 7
+    medrxiv:
+      enabled: true
+      days_back_initial: 3650
+      days_back_nightly: 7
+
+nlp:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  max_abs_length: 4096
+  min_chars_for_embedding: 200
+
+clustering:
+  method: "hdbscan"
+  min_cluster_size: 3
+  min_samples: 2
+  min_similarity_gate: 0.84
+
+independence:
+  senior_author_match: true
+  affiliation_match: true
+  name_fuzzy_threshold: 0.88
+  affiliation_fuzzy_threshold: 0.90
+
+scoring:
+  weights:
+    independent_groups: 0.55
+    time_spread:        0.15
+    source_diversity:   0.10
+    replication_density:0.10
+    rigor_proxies:      0.10
+  rigor:
+    data_or_code_links_weight: 0.4
+    trial_registration_weight: 0.3
+    sample_size_mentions_weight: 0.3
+
+ui:
+  default_topic_filter: ["immuno-oncology", "thoracic oncology", "surgical oncology"]
+  results_per_page: 20
+
+alerts:
+  enabled: true
+  cadence: "daily"
+  email_from: "alerts@nobamboozle.ca"

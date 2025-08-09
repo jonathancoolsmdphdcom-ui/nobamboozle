@@ -1,0 +1,3 @@
+Laser Capture Microdissection of Tertiary Lymphoid Structures from Formalin-Fixed Paraffin-Embedded Sections of Canine Cutaneous and Subcutaneous Sarcomas for NanoString Direct RNA Counting.
+
+Laser capture microdissection (LCM) of formalin-fixed, paraffin-embedded sections is a way to analyze gene expression of morphologically distinct areas of tissue, as microscopically visualized with stained tissue sections. Herein, I describe a method for laser dissecting lymphoid aggregates in canine cutaneous and subcutaneous sarcomas and their adjacent sarcoma tissue to determine the differential expression of RNA as determined by NanoString

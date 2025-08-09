@@ -1,0 +1,3 @@
+Method Development for Sorting Immune Cell Populations Within Tertiary Lymphoid Structures.
+
+The tumor microenvironment is a complex network of interacting cells composed of immune and nonimmune cells. It has been reported that the composition of the immune contexture has a significant impact on tumor growth and patient survival in different solid tumors. For instance, we and other groups have previously demonstrated that a strong infiltration of T-helper type 1 (Th1), memory CD8

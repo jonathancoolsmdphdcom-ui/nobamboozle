@@ -1,0 +1,3 @@
+Beyond the tumor microenvironment: Orchestrating systemic T‑cell response for next‑generation cancer immunotherapy (Review).
+
+Immune checkpoint blockade therapy has revolutionized cancer treatment, yet its clinical efficacy remains limited to a subset of patients with specific tumor types. The present review provides a comprehensive analysis of T cell‑mediated antitumor immunity from both local and systemic perspectives, with particular emphasis on CD8

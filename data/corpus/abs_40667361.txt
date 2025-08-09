@@ -1,0 +1,3 @@
+HIF-1α+ CD4 T cells coordinate a tissue resident immune cell network in the lung.
+
+A deeper understanding of how tissue localized immune cells arise and function is critical for developing mucosal vaccines. Currently, there are no murine models that specifically target tissue T cells while leaving their lymphoid counterparts untouched. Here we leverage the observation that during influenza infection, HIF-1α regulatory activity is higher in the lung compared to lymph node CD4 T cells. Inducible deletion of

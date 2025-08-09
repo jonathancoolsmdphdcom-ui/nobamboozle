@@ -1,0 +1,3 @@
+Presence of Tertiary Lymphoid Structures and Exhausted Tissue-Resident T Cells Determines Clinical Response to PD-1 Blockade in Renal Cell Carcinoma.
+
+We describe a paradigm wherein combined high TLS and low tissue-resident exhausted CD8+ T cells are required for optimal response to PD-1 blockade in RCC. This analysis identifies key determinants of response to PD-1 blockade in advanced RCC and suggests avenues for future immune modulation through rational combination therapy strategies.

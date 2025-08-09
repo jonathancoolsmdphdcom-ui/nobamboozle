@@ -1,0 +1,3 @@
+Engineered bacterial membrane biomimetic covalent organic framework as nano-immunopotentiator for cancer immunotherapy.
+
+The cellular uptake and tissue dispersion efficiency of nanomedicines are crucial for realizing their biological functionality. As a cutting-edge category of nanomedicine, covalent organic frameworks (COFs)-based photosensitizers, have been extensively employed in cancer phototherapy in recent years. However, the inherent aggregation tendency of COFs hinders their uptake by tumor cells and dispersion within tumor tissues, thereby limiting their therapeutic efficacy. In this study, we employed

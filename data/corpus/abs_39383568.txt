@@ -1,0 +1,3 @@
+Tertiary lymphoid structure formation: A matter of tumor-immune co-evolution.
+
+The immune make-up of human tumors is dynamic over the course of cancer progression. However, what factors drive spatiotemporal changes in the tumor-immune landscape is not well-known. In issue 3 of Cell Reports Medicine, Liu, You, Lan and Ren et al. demonstrate that the development of tertiary lymphoid structures (TLSs) is a stepwise process that co-occurs with tumor progression in patients with lung adenocarcinoma (LUAD).

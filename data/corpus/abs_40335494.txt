@@ -1,0 +1,3 @@
+Mature tertiary lymphoid structures evoke intra-tumoral T and B cell responses via progenitor exhausted CD4
+
+Tumor tertiary lymphoid structures (TLS), especially mature TLS (mTLS), have been associated with better prognosis and improved responses to immune checkpoint blockade (ICB), but the underlying mechanisms remain incompletely understood. Here, by performing single-cell RNA, antigen receptor sequencing and spatial transcriptomics on tumor tissue from head and neck squamous cell carcinoma (HNSCC) patients with different statuses of TLS, we observe that mTLS are enriched with stem-like T cells, and B cells at various maturation stages. Notably, progenitor exhausted CD4

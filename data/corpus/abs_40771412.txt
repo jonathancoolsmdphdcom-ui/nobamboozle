@@ -1,0 +1,3 @@
+Efficacy and safety of anti-PD-1/PD-L1 antibodies in patients with relapsed refractory diffuse large B-cell lymphoma: A meta-analysis.
+
+This article conducts a meta-analysis to evaluate the safety and efficacy of PD-1/PD-L1 inhibitors in patients with relapsed/refractory diffuse large B-cell lymphoma (R/R DLBCL). A total of 63 papers were initially retrieved, and eight clinical studies were collected. The estimated effect of ORR was [OR = 0.40, 95% CI 0.29-0.51;

@@ -1,0 +1,3 @@
+Synthetic biology-driven induction of mature TLS formation enhances antitumor immunity in colorectal cancer.
+
+The efficacy of immunotherapy in colorectal cancer (CRC) hinges upon a comprehensive understanding of how the immune system interacts with tumor cells within the colorectal microenvironment. Mature tertiary lymphoid structures (mTLSs) are associated with an increased objective response rate, progression-free survival, and overall survival in patients with CRC. Thus, it has been suggested that increasing mTLSs in the context of CRC could improve patient outcomes. However, no established method to specifically induce TLS maturation within and around tumor sites is available. To address this gap in technology, we engineered a

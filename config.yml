@@ -1,0 +1,57 @@
+﻿project: NoBamboozle
+run_id: "run-{{ now }}"
+paths:
+  corpus_dir: "./data/corpus"
+  vector_dir: "./vectorstore"
+  sqlite_path: "./nobamboozle.db"
+ingestion:
+  include:
+    - "**/*.pdf"
+    - "**/*.txt"
+    - "**/*.md"
+    - "**/*.html"
+  exclude:
+    - "**/~$*"
+    - "**/.DS_Store"
+  pdf:
+    strategy: "pypdf"
+  html:
+    strip_selectors: ["script", "style", "nav", "footer"]
+preprocessing:
+  normalize_whitespace: true
+  drop_short_lines: 1
+  min_chunk_chars: 800
+  max_chunk_chars: 1400
+  chunk_overlap_chars: 150
+  splitter: "semantic"
+embedding:
+  provider: "sentence-transformers"
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  batch_size: 64
+  device: "cpu"
+vectorstore:
+  type: "chroma"
+  collection: "nobamboozle_v1"
+metadata:
+  domain: "nobamboozle.ca"
+  seed_topics:
+    - "thoracic oncology"
+    - "lung cancer"
+    - "esophageal cancer"
+    - "gastric cancer"
+    - "mediastinal masses"
+    - "thymoma"
+    - "sarcoma"
+    - "lymphoma"
+    - "chest wall tumors"
+    - "tumor microenvironment"
+    - "immunotherapy"
+    - "surgery"
+    - "radiation"
+    - "host–tumor interactions"
+runtime:
+  num_workers: 4
+  fail_fast: false
+logging:
+  level: "INFO"
+  file: "./logs/ingest.log"

@@ -1,0 +1,3 @@
+Immune-related hepatitis and hypophysitis are associated with superior survival in melanoma patients treated with combined ipilimumab and nivolumab.
+
+Combination CTLA-4 (ipilimumab) and PD-1 (nivolumab) checkpoint inhibition (dual-ICI) improves survival in patients with advanced melanoma. However, many patients also experience immune-related adverse events (irAE) that require systemic treatment with corticosteroids. Corticosteroids dampen the anti-tumoral response and may impair survival. Here, we investigated the association between irAE and overall survival as well as exposure to corticosteroids and second line immunosuppressants in dual ICI-treated patients with advanced melanoma (

@@ -1,0 +1,3 @@
+Single-cell and spatial transcriptomics reveal mechanisms of radioresistance and immune escape in recurrent nasopharyngeal carcinoma.
+
+Radiotherapy resistance and immune evasion are prominent features of recurrent nasopharyngeal carcinoma (rNPC). However, their mechanisms remain incompletely understood. Here, we conducted single-cell and spatial transcriptomics analysis of 39 tumors from 24 patients to reveal the microenvironmental differences between primary and rNPC. Specific MCAM

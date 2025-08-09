@@ -1,0 +1,3 @@
+IL-33 and ILC2 in pancreatic cancer: good, bad or a bit of both?
+
+Tertiary lymphoid structures (TLS) are associated with anticancer immunity, but the mechanisms underpinning their formation remain poorly understood. Amisaki et al. have recently shown that IL-33 mediates ILC2 gut-tumoral migration and promotes TLS formation in pancreatic ductal adenocarcinoma (PDAC) by inducing group 2 innate lymphoid cell (ILC2) Ltb expression. This study highlights new potential therapeutic avenues to enhance immunotherapy.

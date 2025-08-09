@@ -1,0 +1,55 @@
+Q: lung cancer immunotherapy
+
+1. distance=1.4598  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk.
+----------------------------------------------------------------------------------------------------
+2. distance=1.4737  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk.
+----------------------------------------------------------------------------------------------------
+
+Q: immunotherapy checkpoint inhibitors
+
+1. distance=1.7398  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung …
+----------------------------------------------------------------------------------------------------
+2. distance=1.7800  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc …
+----------------------------------------------------------------------------------------------------
+
+[2025-08-09 15:59:36] Q: lung cancer immunotherapy
+
+1. distance=1.4598  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk.
+----------------------------------------------------------------------------------------------------
+2. distance=1.4737  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk.
+----------------------------------------------------------------------------------------------------
+
+[2025-08-09 15:59:38] Q: checkpoint inhibitors in NSCLC
+
+1. distance=1.9572  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung …
+----------------------------------------------------------------------------------------------------
+2. distance=1.9573  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc …
+----------------------------------------------------------------------------------------------------
+
+[2025-08-09 16:01:59] Q: checkpoint inhibitors in NSCLC
+
+1. distance=1.9572  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung
+cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer
+immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is
+long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to
+chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a
+test doc about lung …
+----------------------------------------------------------------------------------------------------
+2. distance=1.9573  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc
+about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer
+immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is
+long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to
+chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a
+test doc …
+----------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,3 @@
+Integrated single-cell and spatial transcriptomics uncover distinct cellular subtypes involved in neural invasion in pancreatic cancer.
+
+Nerves are integral to tumor biology, yet the peri- and intra-neural microenvironment and their roles in cancer-neural invasion (NI) remain underexplored. Here, we perform single-cell/single-nucleus RNA sequencing (sc/snRNA-seq) and spatial transcriptomics on 62 samples from 25 pancreatic ductal adenocarcinoma (PDAC) patients, mapping cellular composition, lineage dynamics, and spatial organization across varying NI statuses. Tertiary lymphoid structures are abundant in low-NI tumor tissues and co-localize with non-invaded nerves, while NLRP3

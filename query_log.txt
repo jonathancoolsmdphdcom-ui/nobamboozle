@@ -1,0 +1,8 @@
+Q: lung cancer immunotherapy
+
+1. distance=1.4598  file=data\corpus\test.txt  chunk=1
+test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung …
+----------------------------------------------------------------------------------------------------
+2. distance=1.4737  file=data\corpus\test.txt  chunk=0
+﻿This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc about lung cancer immunotherapy. It is long enough to chunk. This is a test doc …
+----------------------------------------------------------------------------------------------------

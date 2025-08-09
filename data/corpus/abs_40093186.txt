@@ -1,0 +1,3 @@
+Inhibitors of oncogenic Kras specifically prime CTLA4 blockade to transcriptionally reprogram Tregs and overcome resistance to suppress pancreas cancer.
+
+Lack of sustained response to oncogenic Kras (Kras*) inhibition in preclinical models and patients with pancreatic ductal adenocarcinoma (PDAC) emphasizes the need to identify impactful synergistic combination therapies to achieve robust clinical benefit. Kras* targeting results in an influx of global T cell infiltrates including Tregs, effector CD8

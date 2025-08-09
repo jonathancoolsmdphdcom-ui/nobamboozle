@@ -1,0 +1,3 @@
+Finding the right friends: Stromal composition influences TLS formation in ovarian cancer.
+
+In this issue of Cancer Cell, MacFawn et al. reveal that tertiary lymphoid structures (TLSs) in high-grade serous ovarian cancer (HGSOC) vary significantly by anatomical site. They highlight a distinct stromal composition associated with TLS formation, with cancer-educated mesenchymal stem cells (CA-MSCs) inversely linked to TLS activity and patient prognosis.

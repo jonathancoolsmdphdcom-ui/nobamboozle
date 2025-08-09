@@ -1,0 +1,3 @@
+Powerful microscopy technologies decode spatially organized cellular networks that drive response to immunotherapy in humans.
+
+In tumors, immune cells organize into networks of different sizes and composition, including complex tertiary lymphoid structures and recently identified networks centered around the chemokines CXCL9/10/11 and CCL19. New commercially available highly multiplexed microscopy using cyclical RNA in situ hybridization and antibody-based approaches have the potential to establish the organization of the immune response in human tissue and serve as a foundation for future immunology research.

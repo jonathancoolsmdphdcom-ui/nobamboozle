@@ -1,0 +1,3 @@
+An Introduction to Tertiary Lymphoid Structures in Cancer.
+
+Immunotherapy has revolutionized therapeutics for cancer patients, which signifies the importance of effective antitumor immunity in combatting cancer. However, the benefit of immunotherapies is limited to specific patient populations and tumor types, suggesting the overt need for new immunotherapeutic targets. Tertiary lymphoid structures (TLS) are ectopic lymph node-like structures that develop at the sites of chronic inflammation such as cancer. TLS are correlated with favorable clinical outcomes across multiple solid tumors and are associated with increased tumor-infiltrating lymphocytes (TILs), particularly effector memory CD8

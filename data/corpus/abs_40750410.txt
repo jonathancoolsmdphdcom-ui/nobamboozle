@@ -1,0 +1,3 @@
+Methionine Deprivation-induced Cancer Cell Death and Methylation Changes in Key Genes and Gene Promoters of Prostate Cancer Cell Lines.
+
+While normal cells are highly regulated, cancer cells take a dysregulated path which bolsters their survival. Currently, a limited number of uniform treatments are available for cancer cure. Our goal was to deprive cancer cells of the key nutrient methionine and determine what effect it would have on cell death and alterations in DNA methylation of prostate cancer cells. PC3 and other cell lines were transfected with plasmid gene constructs for methionine gamma lyase deaminase ( Treatment with  Methionine deprivation through

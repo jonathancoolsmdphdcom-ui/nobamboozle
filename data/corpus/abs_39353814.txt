@@ -1,0 +1,3 @@
+Prognostic value of atypical B cells in breast cancer.
+
+The impact of tumor-infiltrating B cells on breast cancer (BRCA) outcomes remains poorly understood. Recent findings from Yang et al. identify an atypical, clonally expanded population of activated Fc receptor-like 4 (FCRL4)

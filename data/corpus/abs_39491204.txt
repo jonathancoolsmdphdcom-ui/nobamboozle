@@ -1,0 +1,3 @@
+Tertiary lymphoid structure-associated B cells enhance CXCL13
+
+Although the presence of tertiary lymphoid structures (TLS) correlates with positive responses to immunotherapy in many solid malignancies, the mechanism by which TLS enhances anti-tumor immunity is not well understood. The present study aimed to investigate the underlying cross-talk circuits between B cells and tissue-resident memory T (Trm) cells within the TLS and to understand their role in the context of immunotherapy. Immunostaining and hematoxylin and eosin staining of TLS and CXCL13 The presence of TLS and CXCL13 This study further reveals a crucial role for cellular communication between TLS-associated B cell and CXCL13

@@ -1,0 +1,102 @@
+﻿import argparse, textwrap, json
+from pathlib import Path
+from datetime import datetime
+import yaml
+import chromadb
+from chromadb.config import Settings
+
+def trunc(s, n=400):
+    s = (s or "").strip().replace("\n", " ")
+    return (s[:n] + "…") if len(s) > n else s
+
+def main():
+    ap = argparse.ArgumentParser(description="Semantic search over your NoBamboozle corpus.")
+    ap.add_argument("query", nargs="*", help="Your search question / keywords")
+    ap.add_argument("--config", default="config.yml")
+    ap.add_argument("--k", type=int, default=5, help="Number of results")
+    ap.add_argument("--full", action="store_true", help="Show full chunk text instead of snippet")
+    ap.add_argument("--save", type=str, help="Path to save/append TEXT results (.txt)")
+    ap.add_argument("--json", action="store_true", help="Also print JSON to stdout")
+    ap.add_argument("--json-save", type=str, help="Append JSON result as one line to this file (JSONL)")
+    args = ap.parse_args()
+
+    if not args.query:
+        print("Usage: python search.py \"your question\" [--full] [--k 10] [--save out.txt] [--json] [--json-save out.jsonl]")
+        return
+    question = " ".join(args.query)
+
+    cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"], settings=Settings(allow_reset=False))
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+
+    res = coll.query(
+        query_texts=[question],
+        n_results=args.k,
+        include=["documents","metadatas","distances"],
+    )
+
+    docs = (res.get("documents") or [[]])[0]
+    metas = (res.get("metadatas") or [[]])[0]
+    dists = (res.get("distances") or [[]])[0]
+
+    if not docs:
+        print("No results. Did you ingest documents yet?")
+        return
+
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Build plain-text output
+    def maybe_trunc(t): return t.strip() if args.full else trunc(t, 500)
+    output_lines = [f"[{ts}] Q: {question}", ""]
+    for i, (doc, meta, dist) in enumerate(zip(docs, metas, dists), start=1):
+        path = meta.get("path", "(unknown)")
+        chunk_idx = meta.get("chunk_index", "?")
+        header = f"{i}. distance={dist:.4f}  file={path}  chunk={chunk_idx}"
+        output_lines.append(header)
+        output_lines.append(textwrap.fill(maybe_trunc(doc), width=100))
+        output_lines.append("-" * 100)
+
+    # Print text to console
+    for line in output_lines:
+        print(line)
+
+    # Save text if requested (append)
+    if args.save:
+        p = Path(args.save)
+        with p.open("a", encoding="utf-8") as f:
+            f.write("\n".join(output_lines))
+            f.write("\n\n")
+        print(f"\n[Text] Results appended to: {p.resolve()}")
+
+    # Build JSON payload
+    results = []
+    for i, (doc, meta, dist) in enumerate(zip(docs, metas, dists), start=1):
+        results.append({
+            "rank": i,
+            "distance": float(dist),
+            "file": meta.get("path", None),
+            "chunk_index": meta.get("chunk_index", None),
+            "text": doc if args.full else trunc(doc, 500)
+        })
+    payload = {
+        "timestamp": ts,
+        "query": question,
+        "k": args.k,
+        "full": bool(args.full),
+        "results": results,
+    }
+
+    # Print JSON to stdout
+    if args.json:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+
+    # Append JSON as a single line (JSONL)
+    if args.json_save:
+        jp = Path(args.json_save)
+        with jp.open("a", encoding="utf-8") as jf:
+            jf.write(json.dumps(payload, ensure_ascii=False))
+            jf.write("\n")
+        print(f"[JSON] Appended to: {jp.resolve()}")
+
+if __name__ == "__main__":
+    main()

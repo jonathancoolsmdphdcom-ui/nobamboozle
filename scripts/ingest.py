@@ -1,0 +1,121 @@
+﻿import argparse, sqlite3, json
+from pathlib import Path
+from datetime import datetime
+import yaml
+
+from PyPDF2 import PdfReader
+from sentence_transformers import SentenceTransformer
+import chromadb
+from chromadb.config import Settings
+
+def read_text(p: Path) -> str:
+    if p.suffix.lower() == ".pdf":
+        try:
+            r = PdfReader(str(p))
+            return "\n".join((pg.extract_text() or "") for pg in r.pages)
+        except Exception:
+            return ""
+    try:
+        return p.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return ""
+
+def chunk(text: str, min_len: int, max_len: int, overlap: int):
+    s = " ".join(text.split())
+    if not s:
+        return []
+    out = []
+    i = 0
+    n = len(s)
+    while i < n:
+        end = min(i + max_len, n)
+        cut = end
+        for j in range(end, max(i + min_len, end - 400), -1):
+            if s[j-1:j] in [".", "?", "!", "\n"]:
+                cut = j
+                break
+        seg = s[i:cut].strip()
+        if len(seg) >= min_len:
+            out.append(seg)
+        i = cut - overlap if cut - overlap > i else end
+    if not out and s:
+        out = [s[:max_len]]  # fallback: single chunk
+    return out
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default="config.yml")
+    args = ap.parse_args()
+
+    cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
+    Path(cfg["paths"]["corpus_dir"]).mkdir(parents=True, exist_ok=True)
+    Path(cfg["paths"]["vector_dir"]).mkdir(parents=True, exist_ok=True)
+    Path("logs").mkdir(parents=True, exist_ok=True)
+
+    db = sqlite3.connect(cfg["paths"]["sqlite_path"])
+    schema = Path("schema.sql").read_text(encoding="utf-8").lstrip("\ufeff")
+    db.executescript(schema); db.commit()
+
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"], settings=Settings(allow_reset=True))
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+    model = SentenceTransformer(cfg["embedding"]["model_name"])
+    dim = model.get_sentence_embedding_dimension()
+
+    corpus = Path(cfg["paths"]["corpus_dir"])
+    inc = cfg["ingestion"]["include"]; exc = cfg["ingestion"]["exclude"]
+    files = set()
+    for g in inc: files.update(corpus.glob(g))
+    for g in exc:
+        for p in corpus.glob(g): files.discard(p)
+    files = [p for p in files if p.is_file()]
+    if not files:
+        print("No files found in corpus directory."); return
+    print(f"Found {len(files)} file(s).")
+
+    pp = cfg["preprocessing"]; run_id = cfg.get("run_id", f"run-{datetime.now().isoformat()}")
+
+    for path in sorted(files):
+        try:
+            print(f"Processing: {path.name}")
+            text = read_text(path)
+            chunks = chunk(text, pp["min_chunk_chars"], pp["max_chunk_chars"], pp["chunk_overlap_chars"])
+            if not chunks:
+                print("  [skip] No extractable text."); continue
+
+            row = db.execute("SELECT id FROM documents WHERE path=?", (str(path),)).fetchone()
+            if row:
+                doc_id = row[0]
+                db.execute("DELETE FROM embeddings WHERE chunk_id IN (SELECT id FROM chunks WHERE document_id=?)",(doc_id,))
+                db.execute("DELETE FROM chunks WHERE document_id=?", (doc_id,))
+            else:
+                db.execute("INSERT INTO documents(path, title) VALUES(?,?)", (str(path), path.stem))
+                doc_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+            for idx, ch in enumerate(chunks):
+                db.execute("INSERT INTO chunks(document_id, chunk_index, text, n_tokens) VALUES(?,?,?,?)",
+                           (doc_id, idx, ch, len(ch.split())))
+            db.commit()
+
+            rows = db.execute("SELECT id, chunk_index, text FROM chunks WHERE document_id=? ORDER BY chunk_index", (doc_id,)).fetchall()
+            texts = [r[2] for r in rows]; ids = [f"{doc_id}:{r[0]}" for r in rows]
+            print(f"  Embedding {len(texts)} chunk(s)...")
+            embs = model.encode(texts, batch_size=cfg["embedding"]["batch_size"], convert_to_numpy=True, show_progress_bar=True)
+
+            for (r, v) in zip(rows, embs):
+                db.execute("INSERT OR REPLACE INTO embeddings(chunk_id, model, dim, vector) VALUES(?,?,?,?)",
+                           (r[0], cfg["embedding"]["model_name"], dim, v.tobytes()))
+            db.commit()
+
+            coll.upsert(documents=texts, ids=ids,
+                        metadatas=[{"document_id": doc_id, "chunk_index": r[1], "path": str(path)} for r in rows])
+            print(f"[OK] {path.name}  chunks={len(texts)}")
+        except Exception as e:
+            print(f"[ERROR] {path}: {e}")
+
+    db.execute("INSERT INTO jobs(run_id, type, status, config_json, started_at, finished_at) VALUES(?,?,?,?,datetime('now'),datetime('now'))",
+               (run_id, "ingest", "done", json.dumps(cfg)))
+    db.commit(); db.close()
+    print("Ingestion complete.")
+
+if __name__ == "__main__":
+    main()

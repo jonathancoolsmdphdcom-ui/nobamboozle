@@ -1,0 +1,3 @@
+IL-33-activated ILC2s induce tertiary lymphoid structures in pancreatic cancer.
+
+Tertiary lymphoid structures (TLSs) are de novo ectopic lymphoid aggregates that regulate immunity in chronically inflamed tissues, including tumours. Although TLSs form due to inflammation-triggered activation of the lymphotoxin (LT)-LTβ receptor (LTβR) pathway
