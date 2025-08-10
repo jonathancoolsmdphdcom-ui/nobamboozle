@@ -453,13 +453,13 @@ with st.sidebar.expander("Diagnostics", expanded=False):
     try:
         from chromadb import PersistentClient
         # # from chromadb.config import Settings (removed)  # deprecated
-        chroma_path = pathlib.Path(__file__).parent / "vectorstore"
+        chroma_path = Path(__file__).parent / "vectorstore"
         client = PersistentClient(path=str(VECTOR_DIR))
         st.write("Chroma client OK ?", str(chroma_path))
     except Exception as e:
         st.warning(f"Chroma check failed: {e}")
 
-    ROOT = pathlib.Path(__file__).parent
+    ROOT = Path(__file__).parent
     st.write("App root:", str(ROOT))
     for p in ["data", "data/corpus", "vectorstore"]:
         st.write(p, "?", (ROOT / p).exists())
@@ -469,6 +469,7 @@ with st.sidebar.expander("Diagnostics", expanded=False):
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
 
 
 
