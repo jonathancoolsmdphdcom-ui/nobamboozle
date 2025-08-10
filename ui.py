@@ -1,16 +1,19 @@
+# --- Force sqlite3 => pysqlite3 for Chroma on Linux hosts ---
+try:
+    __import__('pysqlite3')
+    import sys as _sys
+    _sys.modules['sqlite3'] = _sys.modules.pop('pysqlite3')
+except Exception:
+    # OK on Windows or if the wheel isn't present locally; Cloud will have it.
+    pass
+
+import os
+os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
+
 # -*- coding: utf-8 -*-
 import platform, sys
-
-# ---- SQLite shim (for environments missing system sqlite3, e.g. Streamlit Cloud) ----
-if platform.system() != "Windows":
-    try:
-        import pysqlite3 as _sqlite3  # noqa: F401
-        sys.modules["sqlite3"] = _sqlite3
-    except Exception:
-        pass
-
 from pathlib import Path
-import json, os, subprocess, sqlite3, re, time
+import json, subprocess, sqlite3, re, time
 from datetime import datetime
 from collections import Counter
 import xml.etree.ElementTree as ET
@@ -19,9 +22,16 @@ import streamlit as st
 import yaml
 import pandas as pd
 import requests
-import os
-os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
-import chromadb
+
+# Try to import chromadb without crashing the whole app
+try:
+    import chromadb
+    CHROMA_OK = True
+    CHROMA_ERR = None
+except Exception as e:
+    CHROMA_OK = False
+    CHROMA_ERR = e
+    chromadb = None  # so references don’t NameError
 
 # ---- App constants/paths ----
 ROOT = Path(__file__).parent
@@ -40,11 +50,13 @@ st.caption("booting...")
 
 # ---------- Cache ----------
 @st.cache_resource(show_spinner=False)
-def load_cfg():
-    return yaml.safe_load(Path("config.yml").read_text(encoding="utf-8"))
-
-@st.cache_resource(show_spinner=False)
 def get_chroma(cfg):
+    if not CHROMA_OK:
+        raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+    return client, coll
+
     client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
     coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
     return client, coll
