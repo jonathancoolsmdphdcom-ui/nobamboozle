@@ -1,7 +1,4 @@
-﻿from pathlib import Path
-ROOT = Path(__file__).parent
-VECTOR_DIR = ROOT / "vectorstore"
-import argparse, sqlite3, json
+﻿import argparse, sqlite3, json
 from pathlib import Path
 from datetime import datetime
 import yaml
@@ -9,7 +6,7 @@ import yaml
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 import chromadb
-# from chromadb.config import Settings  # deprecated
+from chromadb.config import Settings
 
 def read_text(p: Path) -> str:
     if p.suffix.lower() == ".pdf":
@@ -122,4 +119,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

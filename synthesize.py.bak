@@ -1,13 +1,10 @@
-﻿from pathlib import Path
-ROOT = Path(__file__).parent
-VECTOR_DIR = ROOT / "vectorstore"
-import argparse, re, json
+﻿import argparse, re, json
 from pathlib import Path
 from collections import Counter, defaultdict
 
 import yaml
 import chromadb
-# from chromadb.config import Settings  # deprecated
+from chromadb.config import Settings
 
 DEF_PAT = re.compile(r"\b(are|is|refers to|defined as)\b", re.I)
 SUPPORT_PAT = re.compile(r"\b(associated with|predicts?|improv(?:e|es|ing)|increase[ds]?|decrease[ds]?|correlates? with|linked to)\b", re.I)
@@ -147,4 +144,3 @@ def main():
             print(f" {i}. PMID {r['pmid']} — {r['title']}")
         else:
             print(f" {i}. {r['file']} — {r['title']}")
-

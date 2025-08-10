@@ -1,4 +1,7 @@
-﻿# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
+﻿from pathlib import Path
+ROOT = Path(__file__).parent
+VECTOR_DIR = ROOT / "vectorstore"
+# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
 import sys
 try:
     import pysqlite3 as _pysqlite3  # from pysqlite3-binary
@@ -26,7 +29,7 @@ import pandas as pd
 import requests
 
 import chromadb
-from chromadb.config import Settings
+# from chromadb.config import Settings  # deprecated
 
 APP_TITLE = "NoBamboozle — Search UI"
 DEFAULT_LOG_JSONL = "log.jsonl"
@@ -431,10 +434,10 @@ with st.sidebar.expander("Diagnostics", expanded=False):
         st.error(f"sqlite3 import failed: {e}")
 
     try:
-        from chromadb import Client
-        from chromadb.config import Settings
+        from chromadb import PersistentClient
+        # from chromadb.config import Settings  # deprecated
         chroma_path = pathlib.Path(__file__).parent / "vectorstore"
-        client = Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory=str(chroma_path)))
+        client = PersistentClient(path=str(VECTOR_DIR)))
         st.write("Chroma client OK →", str(chroma_path))
     except Exception as e:
         st.warning(f"Chroma check failed: {e}")
@@ -449,4 +452,5 @@ with st.sidebar.expander("Diagnostics", expanded=False):
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
 

@@ -1,4 +1,13 @@
-﻿# ui.py — PubMed pagination, better synthesis, CSV/MD/RIS exports
+﻿# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
+import sys
+try:
+    import pysqlite3 as _pysqlite3  # from pysqlite3-binary
+    sys.modules["sqlite3"] = _pysqlite3
+except Exception:
+    # first boot may run before deps finish installing; rerun will pick it up
+    pass
+# -----------------------------------------------------------
+# ui.py — PubMed pagination, better synthesis, CSV/MD/RIS exports
 
 # --- Force a modern SQLite for Chroma on Streamlit Cloud ---
 import sys
@@ -408,4 +417,36 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
     ).properties(height=22, width=300)
     st.markdown(f"**Robustness: {score}/100**  — based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
     st.altair_chart(chart, use_container_width=False)
+
+
+
+# --- Diagnostics sidebar ---
+import streamlit as st, pathlib
+with st.sidebar.expander("Diagnostics", expanded=False):
+    try:
+        import sqlite3
+        st.write("sqlite3 version:", getattr(sqlite3, "sqlite_version", "unknown"))
+        st.write("sqlite3 module:", getattr(sqlite3, "__file__", "n/a"))
+    except Exception as e:
+        st.error(f"sqlite3 import failed: {e}")
+
+    try:
+        from chromadb import Client
+        from chromadb.config import Settings
+        chroma_path = pathlib.Path(__file__).parent / "vectorstore"
+        client = Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory=str(chroma_path)))
+        st.write("Chroma client OK →", str(chroma_path))
+    except Exception as e:
+        st.warning(f"Chroma check failed: {e}")
+
+    ROOT = pathlib.Path(__file__).parent
+    st.write("App root:", str(ROOT))
+    for p in ["data", "data/corpus", "vectorstore"]:
+        st.write(p, "→", (ROOT / p).exists())
+
+    try:
+        st.write("OPENAI_API_KEY in secrets:", "OPENAI_API_KEY" in st.secrets)
+    except Exception as e:
+        st.warning(f"Secrets not available: {e}")
+# --- End diagnostics ---
 
