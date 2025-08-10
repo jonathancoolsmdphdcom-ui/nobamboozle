@@ -37,7 +37,7 @@ import xml.etree.ElementTree as ET
 import streamlit as st
 st.set_page_config(page_title='Nobamboozle', layout='wide')
 st.title('Nobamboozle')
-st.caption('bootingâ€¦')
+st.caption('booting... build 2025-08-10 13:21:38')
 import yaml
 import pandas as pd
 import requests
@@ -440,7 +440,7 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
 import streamlit as st
 st.set_page_config(page_title='Nobamboozle', layout='wide')
 st.title('Nobamboozle')
-st.caption('bootingâ€¦')
+st.caption('booting... build 2025-08-10 13:21:38')
 
 with st.sidebar.expander("Diagnostics", expanded=False):
     try:
@@ -469,6 +469,7 @@ with st.sidebar.expander("Diagnostics", expanded=False):
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
 
 
 
