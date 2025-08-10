@@ -48,6 +48,24 @@ EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"  # PubMed
 st.set_page_config(page_title="Nobamboozle", layout="wide")
 st.title("Nobamboozle")
 st.caption("booting...")
+# --- quick debug (safe to leave temporarily) ---
+try:
+    import sqlite3 as _sqlite
+    st.write("sqlite3 version:", getattr(_sqlite, "sqlite_version", "unknown"))
+    st.write("sqlite3 module:", getattr(_sqlite, "__file__", "n/a"))
+except Exception as e:
+    st.error(f"sqlite3 import failed: {e}")
+
+st.write("CHROMA_OK:", CHROMA_OK)
+if CHROMA_ERR:
+    st.write("CHROMA_ERR:", CHROMA_ERR)
+
+try:
+    import chromadb as _c
+    st.write("chromadb version:", getattr(_c, "__version__", "?"))
+except Exception as e:
+    st.error(f"chromadb import error: {e}")
+# --- end quick debug ---
 
 # ---------- Cache ----------
 @st.cache_resource(show_spinner=False)
