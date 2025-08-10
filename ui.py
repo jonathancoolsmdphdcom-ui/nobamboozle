@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import platform, sys
 if platform.system() != "Windows":
     try:
@@ -18,7 +18,7 @@ try:
 except Exception:
     pass
 # -------------------------------------------------------------------------
-# ui.py â€” PubMed pagination, better synthesis, CSV/MD/RIS exports
+# ui.py Ã¢â‚¬â€ PubMed pagination, better synthesis, CSV/MD/RIS exports
 
 # --- Optional: swap in pysqlite3 if available (e.g., Streamlit Cloud) ---
 import sys
@@ -35,6 +35,9 @@ from collections import Counter
 import xml.etree.ElementTree as ET
 
 import streamlit as st
+st.set_page_config(page_title='Nobamboozle', layout='wide')
+st.title('Nobamboozle')
+st.caption('booting…')
 import yaml
 import pandas as pd
 import requests
@@ -42,7 +45,7 @@ import requests
 import chromadb
 # from chromadb.config import Settings  # deprecated
 
-APP_TITLE = "NoBamboozle â€” Search UI"
+APP_TITLE = "NoBamboozle Ã¢â‚¬â€ Search UI"
 DEFAULT_LOG_JSONL = "log.jsonl"
 CORPUS_DIR = Path("data/corpus")
 SQLITE_PATH = Path("nobamboozle.db")
@@ -101,7 +104,7 @@ def study_tags(text: str):
 
 def trunc(s: str, n: int = 500) -> str:
     s = (s or "").replace("\n", " ").strip()
-    return (s[:n] + "â€¦") if len(s) > n else s
+    return (s[:n] + "Ã¢â‚¬Â¦") if len(s) > n else s
 
 def run_query(coll, question: str, k: int, full: bool):
     res = coll.query(query_texts=[question], n_results=k, include=["documents","metadatas","distances"])
@@ -155,7 +158,7 @@ def status_badge(cfg):
     if corpus_ready(cfg):
         st.success("? Ready to search", icon="?")
     else:
-        st.warning("?? Not indexed yet â€” upload docs or use PubMed Fetch", icon="??")
+        st.warning("?? Not indexed yet Ã¢â‚¬â€ upload docs or use PubMed Fetch", icon="??")
 
 # ---------- PubMed live fetch (with pagination) ----------
 def pubmed_ids_paged(term: str, cap=400, reldate=365, api_key=None):
@@ -429,13 +432,17 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
         x=alt.X("sum(value):Q", axis=None),
         color=alt.Color("label:N", scale=alt.Scale(domain=["robustness","remainder"], range=[color,"#eeeeee"]), legend=None)
     ).properties(height=22, width=300)
-    st.markdown(f"**Robustness: {score}/100**  â€” based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
+    st.markdown(f"**Robustness: {score}/100**  Ã¢â‚¬â€ based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
     st.altair_chart(chart, use_container_width=False)
 
 
 
 # --- Diagnostics sidebar ---
-import streamlit as st, pathlib
+import streamlit as st
+st.set_page_config(page_title='Nobamboozle', layout='wide')
+st.title('Nobamboozle')
+st.caption('booting…')
+, pathlib
 with st.sidebar.expander("Diagnostics", expanded=False):
     try:
         import sqlite3
