@@ -4,14 +4,26 @@ try:
     import sys as _sys
     _sys.modules['sqlite3'] = _sys.modules.pop('pysqlite3')
 except Exception:
+    # OK on Windows or if wheel missing locally; Cloud will have it.
     pass
 
 import os
 os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
 
+# -*- coding: utf-8 -*-
+import platform, sys
 from pathlib import Path
+import re
+import json, subprocess, sqlite3, time
+from datetime import datetime
+from collections import Counter
+import xml.etree.ElementTree as ET
+
 import streamlit as st
-import yaml, pandas as pd, requests
+import yaml
+import pandas as pd
+import requests
+
 # Try to import chromadb without crashing the whole app
 try:
     import chromadb
@@ -20,8 +32,8 @@ try:
 except Exception as e:
     CHROMA_OK = False
     CHROMA_ERR = e
-    chromadb = None
-    
+    chromadb = None  # avoid NameError later
+
 # ---- App constants/paths ----
 ROOT = Path(__file__).parent
 VECTOR_DIR = ROOT / "vectorstore"
@@ -40,27 +52,25 @@ st.caption("booting...")
 # ---------- Cache ----------
 @st.cache_resource(show_spinner=False)
 def load_cfg():
-    return yaml.safe_load(Path("config.yml").read_text(encoding="utf-8"))
+    # Safe default if config.yml missing
+    cfg_path = ROOT / "config.yml"
+    if not cfg_path.exists():
+        return {
+            "paths": {"vector_dir": str(VECTOR_DIR), "sqlite_path": str(SQLITE_PATH)},
+            "vectorstore": {"collection": "nobamboozle"},
+        }
+    return yaml.safe_load(cfg_path.read_text(encoding="utf-8"))
 
 @st.cache_resource(show_spinner=False)
 def get_chroma(cfg):
     if not CHROMA_OK:
         raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
-    # Try persistent first; if it fails on Cloud, fall back to in-memory so the app still runs
+    # Try persistent first; if it fails, fall back to in‑memory so the app still runs
     try:
         client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
     except Exception as e:
         st.sidebar.warning(f"Persistent Chroma failed ({e}); using in-memory (no persistence).")
-        client = chromadb.Client()  # ephemeral
-    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
-    return client, coll
-    if not CHROMA_OK:
-        raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
-    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
-    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
-    return client, coll
-
-    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
+        client = chromadb.Client()  # ephemeral, process memory only
     coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
     return client, coll
 
@@ -273,26 +283,35 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
         x=alt.X("sum(value):Q", axis=None),
         color=alt.Color("label:N", scale=alt.Scale(domain=["robustness","remainder"], range=[color,"#eeeeee"]), legend=None)
     ).properties(height=22, width=300)
-    st.markdown(f"**Robustness: {score}/100** — based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
+    st.markdown(
+        f"**Robustness: {score}/100** — based on how many retrieved papers support the claim "
+        f"(signal terms without negation) and study weight (RCTs/phase 3 > observational).  "
+        f"\nSupporting: {support_docs} / {total_docs}."
+    )
     st.altair_chart(chart, use_container_width=False)
 
 # --- Diagnostics sidebar ---
-with st.sidebar.expander("Diagnostics", expanded=False):
+with st.sidebar.expander("Diagnostics", expanded=True):
     try:
-        import sqlite3 as _check
-        st.write("sqlite3 version:", getattr(_check, "sqlite_version", "unknown"))
-        st.write("sqlite3 module:", getattr(_check, "__file__", "n/a"))
+        st.write("sqlite3 version:", getattr(sqlite3, "sqlite_version", "unknown"))
+        st.write("sqlite3 module:", getattr(sqlite3, "__file__", "n/a"))
     except Exception as e:
         st.error(f"sqlite3 import failed: {e}")
-    try:
-        from chromadb import PersistentClient
-        client = PersistentClient(path=str(VECTOR_DIR))
-        st.write("Chroma client OK?", str(VECTOR_DIR))
-    except Exception as e:
-        st.warning(f"Chroma check failed: {e}")
+
+    if CHROMA_OK:
+        try:
+            from chromadb import PersistentClient
+            client = PersistentClient(path=str(VECTOR_DIR))
+            st.write("Chroma client OK?", str(VECTOR_DIR))
+        except Exception as e:
+            st.warning(f"Chroma check failed: {e}")
+    else:
+        st.warning(f"Chroma disabled at import: {CHROMA_ERR}")
+
     st.write("App root:", str(ROOT))
     for p in ["data", "data/corpus", "vectorstore"]:
         st.write(p, "→", (ROOT / p).exists())
+
     try:
         st.write("OPENAI_API_KEY in secrets:", "OPENAI_API_KEY" in st.secrets)
     except Exception as e:
