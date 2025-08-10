@@ -47,6 +47,16 @@ import requests
 
 import chromadb
 # from chromadb.config import Settings  # deprecated
+from chromadb import PersistentClient
+from pathlib import Path
+
+@st.cache_resource(show_spinner=False)
+def get_chroma(cfg):
+    vec_dir = Path(cfg.get("paths", {}).get("vector_dir", VECTOR_DIR))
+    vec_dir.mkdir(parents=True, exist_ok=True)  # ensure folder exists
+    client = PersistentClient(path=str(vec_dir))  # no Settings
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+    return client, coll
 
 APP_TITLE = "NoBamboozle — Search UI"
 DEFAULT_LOG_JSONL = "log.jsonl"
