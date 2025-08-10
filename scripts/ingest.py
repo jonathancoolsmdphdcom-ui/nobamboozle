@@ -9,7 +9,7 @@ import yaml
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 import chromadb
-# from chromadb.config import Settings  # deprecated
+# # from chromadb.config import Settings (removed)  # deprecated
 
 def read_text(p: Path) -> str:
     if p.suffix.lower() == ".pdf":
@@ -59,7 +59,7 @@ def main():
     schema = Path("schema.sql").read_text(encoding="utf-8").lstrip("\ufeff")
     db.executescript(schema); db.commit()
 
-    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"], settings=Settings(allow_reset=True))
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
     coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
     model = SentenceTransformer(cfg["embedding"]["model_name"])
     dim = model.get_sentence_embedding_dimension()
@@ -122,4 +122,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

@@ -1,9 +1,12 @@
-﻿import argparse, textwrap, json
+﻿from pathlib import Path
+ROOT = Path(__file__).parent
+VECTOR_DIR = ROOT / "vectorstore"
+import argparse, textwrap, json
 from pathlib import Path
 from datetime import datetime
 import yaml
 import chromadb
-from chromadb.config import Settings
+# from chromadb.config import Settings  # deprecated
 
 def trunc(s, n=400):
     s = (s or "").strip().replace("\n", " ")
@@ -100,3 +103,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

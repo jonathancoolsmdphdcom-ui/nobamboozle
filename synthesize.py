@@ -7,7 +7,7 @@ from collections import Counter, defaultdict
 
 import yaml
 import chromadb
-# from chromadb.config import Settings  # deprecated
+# # from chromadb.config import Settings (removed)  # deprecated
 
 DEF_PAT = re.compile(r"\b(are|is|refers to|defined as)\b", re.I)
 SUPPORT_PAT = re.compile(r"\b(associated with|predicts?|improv(?:e|es|ing)|increase[ds]?|decrease[ds]?|correlates? with|linked to)\b", re.I)
@@ -72,7 +72,7 @@ def main():
     term = " ".join(args.query).strip()
 
     cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
-    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"], settings=Settings(allow_reset=False))
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
     coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
 
     res = coll.query(query_texts=[term], n_results=args.k, include=["documents","metadatas","distances"])
@@ -147,4 +147,5 @@ def main():
             print(f" {i}. PMID {r['pmid']} — {r['title']}")
         else:
             print(f" {i}. {r['file']} — {r['title']}")
+
 

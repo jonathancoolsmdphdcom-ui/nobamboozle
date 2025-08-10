@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import datetime
 import yaml
 import chromadb
-# from chromadb.config import Settings  # deprecated
+# # from chromadb.config import Settings (removed)  # deprecated
 
 def trunc(s, n=400):
     s = (s or "").strip().replace("\n", " ")
@@ -29,7 +29,7 @@ def main():
     question = " ".join(args.query)
 
     cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
-    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"], settings=Settings(allow_reset=False))
+    client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
     coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
 
     res = coll.query(
@@ -103,4 +103,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
