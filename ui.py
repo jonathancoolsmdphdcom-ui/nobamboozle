@@ -1,22 +1,33 @@
-﻿from pathlib import Path
+﻿# -*- coding: utf-8 -*-
+import platform, sys
+if platform.system() != "Windows":
+    try:
+        import pysqlite3
+        sys.modules["sqlite3"] = pysqlite3
+    except Exception:
+        pass
+
+from pathlib import Path
 ROOT = Path(__file__).parent
 VECTOR_DIR = ROOT / "vectorstore"
-# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
+# --- Optional: swap in pysqlite3 if available (e.g., Streamlit Cloud) ---
 import sys
 try:
-    import pysqlite3 as _pysqlite3  # from pysqlite3-binary
-    sys.modules["sqlite3"] = _pysqlite3
+    import pysqlite3 as _sqlite3  # noqa
+    sys.modules["sqlite3"] = _sqlite3
 except Exception:
-    # first boot may run before deps finish installing; rerun will pick it up
     pass
-# -----------------------------------------------------------
-# ui.py — PubMed pagination, better synthesis, CSV/MD/RIS exports
+# -------------------------------------------------------------------------
+# ui.py â€” PubMed pagination, better synthesis, CSV/MD/RIS exports
 
-# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
+# --- Optional: swap in pysqlite3 if available (e.g., Streamlit Cloud) ---
 import sys
-import pysqlite3  # from pysqlite3-binary
-sys.modules["sqlite3"] = pysqlite3
-# -----------------------------------------------------------
+try:
+    import pysqlite3 as _sqlite3  # noqa
+    sys.modules["sqlite3"] = _sqlite3
+except Exception:
+    pass
+# -------------------------------------------------------------------------
 import json, os, sys, subprocess, sqlite3, re, time
 from pathlib import Path
 from datetime import datetime
@@ -31,7 +42,7 @@ import requests
 import chromadb
 # from chromadb.config import Settings  # deprecated
 
-APP_TITLE = "NoBamboozle — Search UI"
+APP_TITLE = "NoBamboozle â€” Search UI"
 DEFAULT_LOG_JSONL = "log.jsonl"
 CORPUS_DIR = Path("data/corpus")
 SQLITE_PATH = Path("nobamboozle.db")
@@ -90,7 +101,7 @@ def study_tags(text: str):
 
 def trunc(s: str, n: int = 500) -> str:
     s = (s or "").replace("\n", " ").strip()
-    return (s[:n] + "…") if len(s) > n else s
+    return (s[:n] + "â€¦") if len(s) > n else s
 
 def run_query(coll, question: str, k: int, full: bool):
     res = coll.query(query_texts=[question], n_results=k, include=["documents","metadatas","distances"])
@@ -142,9 +153,9 @@ def corpus_ready(cfg) -> bool:
 
 def status_badge(cfg):
     if corpus_ready(cfg):
-        st.success("✅ Ready to search", icon="✅")
+        st.success("? Ready to search", icon="?")
     else:
-        st.warning("⚠️ Not indexed yet — upload docs or use PubMed Fetch", icon="⚠️")
+        st.warning("?? Not indexed yet â€” upload docs or use PubMed Fetch", icon="??")
 
 # ---------- PubMed live fetch (with pagination) ----------
 def pubmed_ids_paged(term: str, cap=400, reldate=365, api_key=None):
@@ -418,7 +429,7 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
         x=alt.X("sum(value):Q", axis=None),
         color=alt.Color("label:N", scale=alt.Scale(domain=["robustness","remainder"], range=[color,"#eeeeee"]), legend=None)
     ).properties(height=22, width=300)
-    st.markdown(f"**Robustness: {score}/100**  — based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
+    st.markdown(f"**Robustness: {score}/100**  â€” based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
     st.altair_chart(chart, use_container_width=False)
 
 
@@ -437,20 +448,24 @@ with st.sidebar.expander("Diagnostics", expanded=False):
         from chromadb import PersistentClient
         # from chromadb.config import Settings  # deprecated
         chroma_path = pathlib.Path(__file__).parent / "vectorstore"
-        client = PersistentClient(path=str(VECTOR_DIR)))
-        st.write("Chroma client OK →", str(chroma_path))
+        client = PersistentClient(path=str(VECTOR_DIR))
+        st.write("Chroma client OK ?", str(chroma_path))
     except Exception as e:
         st.warning(f"Chroma check failed: {e}")
 
     ROOT = pathlib.Path(__file__).parent
     st.write("App root:", str(ROOT))
     for p in ["data", "data/corpus", "vectorstore"]:
-        st.write(p, "→", (ROOT / p).exists())
+        st.write(p, "?", (ROOT / p).exists())
 
     try:
         st.write("OPENAI_API_KEY in secrets:", "OPENAI_API_KEY" in st.secrets)
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
+
+
+
 
 
