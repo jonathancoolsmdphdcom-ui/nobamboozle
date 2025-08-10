@@ -1,5 +1,10 @@
 ﻿# ui.py — PubMed pagination, better synthesis, CSV/MD/RIS exports
 
+# --- Force a modern SQLite for Chroma on Streamlit Cloud ---
+import sys
+import pysqlite3  # from pysqlite3-binary
+sys.modules["sqlite3"] = pysqlite3
+# -----------------------------------------------------------
 import json, os, sys, subprocess, sqlite3, re, time
 from pathlib import Path
 from datetime import datetime
