@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
+ROOT = Path(__file__).parent
+VECTOR_DIR = ROOT / "vectorstore"
 import platform, sys
 if platform.system() != "Windows":
     try:
@@ -18,7 +21,7 @@ try:
 except Exception:
     pass
 # -------------------------------------------------------------------------
-# ui.py Ã¢â‚¬â€ PubMed pagination, better synthesis, CSV/MD/RIS exports
+# ui.py — PubMed pagination, better synthesis, CSV/MD/RIS exports
 
 # --- Optional: swap in pysqlite3 if available (e.g., Streamlit Cloud) ---
 import sys
@@ -45,7 +48,7 @@ import requests
 import chromadb
 # from chromadb.config import Settings  # deprecated
 
-APP_TITLE = "NoBamboozle Ã¢â‚¬â€ Search UI"
+APP_TITLE = "NoBamboozle — Search UI"
 DEFAULT_LOG_JSONL = "log.jsonl"
 CORPUS_DIR = Path("data/corpus")
 SQLITE_PATH = Path("nobamboozle.db")
@@ -158,7 +161,7 @@ def status_badge(cfg):
     if corpus_ready(cfg):
         st.success("? Ready to search", icon="?")
     else:
-        st.warning("?? Not indexed yet Ã¢â‚¬â€ upload docs or use PubMed Fetch", icon="??")
+        st.warning("?? Not indexed yet — upload docs or use PubMed Fetch", icon="??")
 
 # ---------- PubMed live fetch (with pagination) ----------
 def pubmed_ids_paged(term: str, cap=400, reldate=365, api_key=None):
@@ -432,7 +435,7 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
         x=alt.X("sum(value):Q", axis=None),
         color=alt.Color("label:N", scale=alt.Scale(domain=["robustness","remainder"], range=[color,"#eeeeee"]), legend=None)
     ).properties(height=22, width=300)
-    st.markdown(f"**Robustness: {score}/100**  Ã¢â‚¬â€ based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
+    st.markdown(f"**Robustness: {score}/100**  — based on how many retrieved papers support the claim (signal terms without negation) and study weight (RCTs/phase 3 > observational).  \nSupporting: {support_docs} / {total_docs}.")
     st.altair_chart(chart, use_container_width=False)
 
 
@@ -442,7 +445,7 @@ import streamlit as st
 st.set_page_config(page_title='Nobamboozle', layout='wide')
 st.title('Nobamboozle')
 st.caption('booting…')
-, pathlib
+
 with st.sidebar.expander("Diagnostics", expanded=False):
     try:
         import sqlite3
@@ -453,23 +456,22 @@ with st.sidebar.expander("Diagnostics", expanded=False):
 
     try:
         from chromadb import PersistentClient
-        # from chromadb.config import Settings  # deprecated
-        chroma_path = pathlib.Path(__file__).parent / "vectorstore"
+        # Vector dir (we already defined ROOT and VECTOR_DIR earlier)
         client = PersistentClient(path=str(VECTOR_DIR))
-        st.write("Chroma client OK ?", str(chroma_path))
+        st.write("Chroma client OK?", str(VECTOR_DIR))
     except Exception as e:
         st.warning(f"Chroma check failed: {e}")
 
-    ROOT = pathlib.Path(__file__).parent
     st.write("App root:", str(ROOT))
     for p in ["data", "data/corpus", "vectorstore"]:
-        st.write(p, "?", (ROOT / p).exists())
+        st.write(p, "→", (ROOT / p).exists())
 
     try:
         st.write("OPENAI_API_KEY in secrets:", "OPENAI_API_KEY" in st.secrets)
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
 
 
 
