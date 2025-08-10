@@ -9,19 +9,8 @@ except Exception:
 import os
 os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
 
-# -*- coding: utf-8 -*-
-import platform, sys
-from pathlib import Path
-import json, subprocess, sqlite3, re, time
-from datetime import datetime
-from collections import Counter
-import xml.etree.ElementTree as ET
-
 import streamlit as st
-import yaml
-import pandas as pd
-import requests
-
+import yaml, pandas as pd, requests
 # Try to import chromadb without crashing the whole app
 try:
     import chromadb
@@ -30,8 +19,8 @@ try:
 except Exception as e:
     CHROMA_OK = False
     CHROMA_ERR = e
-    chromadb = None  # so references don’t NameError
-
+    chromadb = None
+    
 # ---- App constants/paths ----
 ROOT = Path(__file__).parent
 VECTOR_DIR = ROOT / "vectorstore"
