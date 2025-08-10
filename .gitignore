@@ -39,3 +39,11 @@ API secret key Aug 9 2025.txt
 API secret key Aug 9 2025.txt
 
 .streamlit/secrets.toml
+# Local/generated
+vectorstore/
+data/corpus/
+nobamboozle.db
+log.jsonl
+*.sqlite3
+*.bak
+ui.py.bak*
