@@ -28,7 +28,7 @@ try:
 except Exception:
     pass
 # -------------------------------------------------------------------------
-import json, os, sys, subprocess, sqlite3, re, time, pathlib
+import json, os, sys, subprocess, sqlite3, re, time
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
@@ -469,6 +469,7 @@ with st.sidebar.expander("Diagnostics", expanded=False):
     except Exception as e:
         st.warning(f"Secrets not available: {e}")
 # --- End diagnostics ---
+
 
 
 
