@@ -19,6 +19,8 @@ import streamlit as st
 import yaml
 import pandas as pd
 import requests
+import os
+os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
 import chromadb
 
 # ---- App constants/paths ----
