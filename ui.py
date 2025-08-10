@@ -66,9 +66,6 @@ try:
 except Exception as e:
     st.error(f"chromadb import error: {e}")
 # --- end quick debug ---
-# --- Minimal UI to prove things work ---
-cfg = load_cfg()
-st.write("Vector dir:", cfg["paths"]["vector_dir"])
 
 # Show index status (db + vector dir)
 status_badge(cfg)
@@ -332,6 +329,9 @@ def render_robustness(score: int, support_docs: int, total_docs: int):
         f"\nSupporting: {support_docs} / {total_docs}."
     )
     st.altair_chart(chart, use_container_width=False)
+# --- Minimal UI to prove things work ---
+cfg = load_cfg()
+st.write("Vector dir:", cfg["paths"]["vector_dir"])
 
 # --- Diagnostics sidebar ---
 with st.sidebar.expander("Diagnostics", expanded=True):
