@@ -66,6 +66,31 @@ try:
 except Exception as e:
     st.error(f"chromadb import error: {e}")
 # --- end quick debug ---
+# --- Minimal UI to prove things work ---
+cfg = load_cfg()
+st.write("Vector dir:", cfg["paths"]["vector_dir"])
+
+# Show index status (db + vector dir)
+status_badge(cfg)
+
+# Try to open Chroma (falls back to in-memory if persistent fails)
+try:
+    client, coll = get_chroma(cfg)
+    st.success("Chroma client ready.")
+except Exception as e:
+    st.error(f"Could not start Chroma: {e}")
+    coll = None
+
+# Simple search box
+q = st.text_input("Ask a question to search your vectorstore (or just type anything):")
+k = st.slider("Results", 1, 10, 5)
+full = st.checkbox("Show full text", False)
+
+if q and coll:
+    with st.spinner("Searching…"):
+        rows = run_query(coll, q, k, full)
+        df = df_from_rows(rows, full=full)
+        st.dataframe(df, use_container_width=True)
 
 # ---------- Cache ----------
 @st.cache_resource(show_spinner=False)
