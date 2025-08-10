@@ -9,6 +9,7 @@ except Exception:
 import os
 os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
 
+from pathlib import Path
 import streamlit as st
 import yaml, pandas as pd, requests
 # Try to import chromadb without crashing the whole app
