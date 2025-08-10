@@ -4,7 +4,6 @@ try:
     import sys as _sys
     _sys.modules['sqlite3'] = _sys.modules.pop('pysqlite3')
 except Exception:
-    # OK on Windows or if the wheel isn't present locally; Cloud will have it.
     pass
 
 import os
@@ -50,7 +49,21 @@ st.caption("booting...")
 
 # ---------- Cache ----------
 @st.cache_resource(show_spinner=False)
+def load_cfg():
+    return yaml.safe_load(Path("config.yml").read_text(encoding="utf-8"))
+
+@st.cache_resource(show_spinner=False)
 def get_chroma(cfg):
+    if not CHROMA_OK:
+        raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
+    # Try persistent first; if it fails on Cloud, fall back to in-memory so the app still runs
+    try:
+        client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
+    except Exception as e:
+        st.sidebar.warning(f"Persistent Chroma failed ({e}); using in-memory (no persistence).")
+        client = chromadb.Client()  # ephemeral
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+    return client, coll
     if not CHROMA_OK:
         raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
     client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
