@@ -66,6 +66,28 @@ try:
 except Exception as e:
     st.error(f"chromadb import error: {e}")
 # --- end quick debug ---
+# --- status badge helper (safe no-op on deploy) ---
+from pathlib import Path
+import os
+import streamlit as st
+
+def status_badge(cfg=None):
+    """
+    Lightweight diagnostic badges so deploy doesn't break if helper is missing.
+    Checks presence of local paths only; doesn't require secrets.
+    """
+    checks = [
+        ("app root", Path(".").exists()),
+        ("data", Path("data").exists()),
+        ("data/corpus", Path("data/corpus").exists()),
+        ("vectorstore", Path("vectorstore").exists()),
+        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
+    ]
+
+    # Render compact bullets; avoids Streamlit metric() type issues
+    st.caption("Index status")
+    for label, ok in checks:
+        st.write(("✅ " if ok else "❌ ") + label)
 
 # Show index status (db + vector dir)
 status_badge(cfg)
