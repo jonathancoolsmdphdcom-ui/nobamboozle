@@ -1,27 +1,24 @@
 # --- Force sqlite3 => pysqlite3 for Chroma on Linux hosts ---
 try:
-    __import__('pysqlite3')
+    __import__("pysqlite3")
     import sys as _sys
-    _sys.modules['sqlite3'] = _sys.modules.pop('pysqlite3')
+    _sys.modules["sqlite3"] = _sys.modules.pop("pysqlite3")
 except Exception:
-    # OK on Windows or if wheel missing locally; Cloud will have it.
     pass
 
 import os
 os.environ["CHROMA_SQLITE_IMPLEMENTATION"] = "pysqlite3"
 
 # -*- coding: utf-8 -*-
-import platform, sys
+import sys, platform, re, json, sqlite3, time
 from pathlib import Path
-import re
-import json, subprocess, sqlite3, time
 from datetime import datetime
-from collections import Counter
 import xml.etree.ElementTree as ET
+from collections import Counter
 
 import streamlit as st
-import yaml
 import pandas as pd
+import yaml
 import requests
 
 # Try to import chromadb without crashing the whole app
@@ -34,76 +31,70 @@ except Exception as e:
     CHROMA_ERR = e
     chromadb = None  # avoid NameError later
 
-# --- safe status badge stub (won't crash if helper missing) ---
-import streamlit as st
-from pathlib import Path
-
-def status_badge(cfg=None):
-    """Lightweight diagnostics so deploy doesn't fail."""
-    checks = [
-        ("app root", Path(".").exists()),
-        ("data", Path("data").exists()),
-        ("data/corpus", Path("data/corpus").exists()),
-        ("vectorstore", Path("vectorstore").exists()),
-        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
-    ]
-    st.caption("Index status")
-    for label, ok in checks:
-        st.write(("✅ " if ok else "❌ ") + label)
-
-# --- Safe defaults for cfg + status_badge ---
-import streamlit as st
-from pathlib import Path
-
-# Default empty config so NameError never happens
-cfg = {}
-
-def status_badge(cfg=None):
-    """Lightweight diagnostic badges; won't break if config is empty."""
-    checks = [
-        ("app root", Path(".").exists()),
-        ("data", Path("data").exists()),
-        ("data/corpus", Path("data/corpus").exists()),
-        ("vectorstore", Path("vectorstore").exists()),
-        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
-    ]
-    st.caption("Index status")
-    for label, ok in checks:
-        st.write(("✅ " if ok else "❌ ") + label)
-
-
-    
-# --- status badge helper (safe no-op on deploy) ---
-from pathlib import Path
-import streamlit as st
-
-def status_badge(cfg=None):
-    """Simple diagnostics; doesn't require secrets."""
-    checks = [
-        ("app root", Path(".").exists()),
-        ("data", Path("data").exists()),
-        ("data/corpus", Path("data/corpus").exists()),
-        ("vectorstore", Path("vectorstore").exists()),
-        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
-    ]
-    st.caption("Index status")
-    for label, ok in checks:
-        st.write(("✅ " if ok else "❌ ") + label)
-
 # ---- App constants/paths ----
 ROOT = Path(__file__).parent
 VECTOR_DIR = ROOT / "vectorstore"
-
-APP_TITLE = "NoBamboozle — Search UI"
-DEFAULT_LOG_JSONL = "log.jsonl"
 CORPUS_DIR = ROOT / "data" / "corpus"
 SQLITE_PATH = ROOT / "nobamboozle.db"
-EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"  # PubMed
+EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
-# ---- Streamlit page setup ----
+APP_TITLE = "NoBamboozle — Search UI"
+
 st.set_page_config(page_title="Nobamboozle", layout="wide")
 st.title("Nobamboozle")
 st.caption("booting...")
+
+# ---------- Cache + config ----------
+@st.cache_resource(show_spinner=False)
+def load_cfg():
+    cfg_path = ROOT / "config.yml"
+    if not cfg_path.exists():
+        return {
+            "paths": {"vector_dir": str(VECTOR_DIR), "sqlite_path": str(SQLITE_PATH)},
+            "vectorstore": {"collection": "nobamboozle"},
+        }
+    return yaml.safe_load(cfg_path.read_text(encoding="utf-8"))
+
+cfg = load_cfg()  # <-- define cfg early and once
+
+# ---------- Helpers used below ----------
+def corpus_ready(cfg) -> bool:
+    try:
+        p = Path(cfg["paths"]["sqlite_path"])
+        if not p.exists():
+            return False
+        db = sqlite3.connect(str(p), check_same_thread=False)
+        cnt = pd.read_sql_query("SELECT COUNT(*) AS n FROM chunks", db)["n"].iloc[0]
+        db.close()
+    except Exception:
+        return False
+    return Path(cfg["paths"]["vector_dir"]).exists() and cnt > 0
+
+def status_badge(cfg=None):
+    st.caption("Index status")
+    checks = [
+        ("app root", ROOT.exists()),
+        ("data", (ROOT / "data").exists()),
+        ("data/corpus", (ROOT / "data" / "corpus").exists()),
+        ("vectorstore", (ROOT / "vectorstore").exists()),
+        ("database (nobamboozle.db)", SQLITE_PATH.exists()),
+    ]
+    for label, ok in checks:
+        st.write(("✅ " if ok else "❌ ") + label)
+
+@st.cache_resource(show_spinner=False)
+def get_chroma(cfg):
+    if not CHROMA_OK:
+        raise RuntimeError(f"Chroma unavailable: {CHROMA_ERR}")
+    # Try persistent first; fall back to in-memory so app still runs
+    try:
+        client = chromadb.PersistentClient(path=cfg["paths"]["vector_dir"])
+    except Exception as e:
+        st.sidebar.warning(f"Persistent Chroma failed ({e}); using in-memory (no persistence).")
+        client = chromadb.Client()
+    coll = client.get_or_create_collection(name=cfg["vectorstore"]["collection"])
+    return client, coll
+
 # --- quick debug (safe to leave temporarily) ---
 try:
     import sqlite3 as _sqlite
@@ -115,12 +106,13 @@ except Exception as e:
 st.write("CHROMA_OK:", CHROMA_OK)
 if CHROMA_ERR:
     st.write("CHROMA_ERR:", CHROMA_ERR)
-
 try:
     import chromadb as _c
     st.write("chromadb version:", getattr(_c, "__version__", "?"))
 except Exception as e:
     st.error(f"chromadb import error: {e}")
+# --- end quick debug ---
+
 # --- end quick debug ---
 # --- status badge helper (safe no-op on deploy) ---
 from pathlib import Path
