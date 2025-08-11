@@ -51,6 +51,27 @@ def status_badge(cfg=None):
     for label, ok in checks:
         st.write(("✅ " if ok else "❌ ") + label)
 
+# --- Safe defaults for cfg + status_badge ---
+import streamlit as st
+from pathlib import Path
+
+# Default empty config so NameError never happens
+cfg = {}
+
+def status_badge(cfg=None):
+    """Lightweight diagnostic badges; won't break if config is empty."""
+    checks = [
+        ("app root", Path(".").exists()),
+        ("data", Path("data").exists()),
+        ("data/corpus", Path("data/corpus").exists()),
+        ("vectorstore", Path("vectorstore").exists()),
+        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
+    ]
+    st.caption("Index status")
+    for label, ok in checks:
+        st.write(("✅ " if ok else "❌ ") + label)
+
+
     
 # --- status badge helper (safe no-op on deploy) ---
 from pathlib import Path
