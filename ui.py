@@ -19,6 +19,15 @@ import streamlit as st
 import pandas as pd
 import yaml
 import requests
+# --- quick debug (safe) ---
+def show_sqlite_debug():
+    try:
+        import sqlite3 as _sqlite
+        st.write("sqlite3 version:", getattr(_sqlite, "sqlite_version", "unknown"))
+        st.write("sqlite3 module:", getattr(_sqlite, "__file__", "n/a"))
+    except Exception as e:
+        st.error(f"sqlite3 import failed: {e}")
+# --- end quick debug ---
 
 # Try to import chromadb but don’t crash the app if missing
 try:
@@ -149,18 +158,19 @@ def df_from_rows(rows, full=False):
 try:
     client, coll = get_chroma(cfg)
     st.success("Chroma client ready.")
+    
     # ---- Deep index diagnostics ----
-with st.sidebar.expander("Index status (detailed)", expanded=True):
-    # Chroma collection info
-    try:
-        st.write("Chroma collection:", coll.name)
-        st.write("Chroma count (embeddings):", coll.count())
+    with st.sidebar.expander("Index status (detailed)", expanded=True):
+        # Chroma collection info
+        try:
+            st.write("Chroma collection:", coll.name)
+            st.write("Chroma count (embeddings):", coll.count())
         # Optional: list first few doc ids
-        ids = (coll.get(ids=None, include=[]).get("ids") or [])[:5]
-        if ids:
-            st.write("Sample IDs:", ids)
-    except Exception as e:
-        st.error(f"Chroma check failed: {e}")
+            ids = (coll.get(ids=None, include=[]).get("ids") or [])[:5]
+            if ids:
+                st.write("Sample IDs:", ids)
+        except Exception as e:
+            st.error(f"Chroma check failed: {e}")
 
     # Vectorstore directory footprint
     try:
