@@ -33,6 +33,22 @@ except Exception as e:
     CHROMA_OK = False
     CHROMA_ERR = e
     chromadb = None  # avoid NameError later
+# --- status badge helper (safe no-op on deploy) ---
+from pathlib import Path
+import streamlit as st
+
+def status_badge(cfg=None):
+    """Simple diagnostics; doesn't require secrets."""
+    checks = [
+        ("app root", Path(".").exists()),
+        ("data", Path("data").exists()),
+        ("data/corpus", Path("data/corpus").exists()),
+        ("vectorstore", Path("vectorstore").exists()),
+        ("database (nobamboozle.db)", Path("nobamboozle.db").exists()),
+    ]
+    st.caption("Index status")
+    for label, ok in checks:
+        st.write(("✅ " if ok else "❌ ") + label)
 
 # ---- App constants/paths ----
 ROOT = Path(__file__).parent
