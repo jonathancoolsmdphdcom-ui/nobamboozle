@@ -149,6 +149,43 @@ def df_from_rows(rows, full=False):
 try:
     client, coll = get_chroma(cfg)
     st.success("Chroma client ready.")
+    # ---- Deep index diagnostics ----
+with st.sidebar.expander("Index status (detailed)", expanded=True):
+    # Chroma collection info
+    try:
+        st.write("Chroma collection:", coll.name)
+        st.write("Chroma count (embeddings):", coll.count())
+        # Optional: list first few doc ids
+        ids = (coll.get(ids=None, include=[]).get("ids") or [])[:5]
+        if ids:
+            st.write("Sample IDs:", ids)
+    except Exception as e:
+        st.error(f"Chroma check failed: {e}")
+
+    # Vectorstore directory footprint
+    try:
+        import os
+        nfiles = sum(len(files) for _, _, files in os.walk(VECTOR_DIR))
+        st.write("Files under vectorstore/:", nfiles)
+    except Exception as e:
+        st.warning(f"Vectorstore walk failed: {e}")
+
+    # SQLite (chunks table) check
+    try:
+        conn = connect_db(str(SQLITE_PATH))
+        if conn:
+            n_chunks = pd.read_sql_query("SELECT COUNT(*) AS n FROM chunks", conn)["n"].iloc[0]
+            n_files  = pd.read_sql_query("SELECT COUNT(DISTINCT file_id) AS n FROM chunks", conn)["n"].iloc[0]
+            st.write("SQLite chunks:", int(n_chunks))
+            st.write("SQLite distinct files:", int(n_files))
+            preview = pd.read_sql_query("SELECT file_id, chunk_index, substr(text,1,120) AS snippet FROM chunks LIMIT 3", conn)
+            st.dataframe(preview, use_container_width=True)
+            conn.close()
+        else:
+            st.warning("SQLite DB not found/openable.")
+    except Exception as e:
+        st.error(f"SQLite check failed: {e}")
+
 except Exception as e:
     st.error(f"Could not start Chroma: {e}")
     coll = None
